@@ -4,7 +4,7 @@ import { MdOutlineFeed } from 'react-icons/md'
 import { AiOutlineArrowLeft, AiOutlineArrowRight, AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { LuMoreHorizontal } from 'react-icons/lu'
 import { BsSearch, BsMusicNoteBeamed, BsDot } from 'react-icons/bs'
-import { PiRepeat } from 'react-icons/pi'
+import { PiRepeat, PiRepeatFill, PiRepeatOnceFill } from 'react-icons/pi'
 import { FaPlay, FaPause } from 'react-icons/fa'
 import { GiNextButton, GiPreviousButton } from 'react-icons/gi'
 const icons = {
@@ -26,7 +26,9 @@ const icons = {
     GiNextButton,
     GiPreviousButton,
     BsMusicNoteBeamed,
-    BsDot
+    BsDot,
+    PiRepeatFill, 
+    PiRepeatOnceFill
 }
 
 export default icons

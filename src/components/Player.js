@@ -7,7 +7,7 @@ import * as actions from '../store/actions'
 import icons from "../utils/icons";
 import { getRandomIndex } from "../utils/fn";
 
-const { AiOutlineHeart, LuMoreHorizontal, PiRepeat, LiaRandomSolid, FaPlay, FaPause, GiNextButton, GiPreviousButton } = icons
+const { AiOutlineHeart, LuMoreHorizontal, LiaRandomSolid, FaPlay, FaPause, GiNextButton, GiPreviousButton, PiRepeatFill, PiRepeatOnceFill } = icons
 
 function Player() {
     const { curSongId, isPlaying, playlistSongs, curSongIndex } = useSelector(state => state.music)
@@ -16,7 +16,8 @@ function Player() {
     const [audioEl, setAudioEl] = useState(new Audio())
     const [curSeconds, setCurSeconds] = useState(0)
 
-    const [isRepeat, setIsRepeat] = useState(false)
+    // 0: normal, 1: repeat playlist, 2: repeat once
+    const [repeatMode, setRepeatMode] = useState(0)
     const [isRandom, setIsRandom] = useState(false)
 
     // console.log(playlistSongs);
@@ -65,7 +66,7 @@ function Player() {
         setIsRandom(!isRandom)
     }
     const handleClickRepeatBtn = () => {
-        setIsRepeat(!isRepeat)
+        setRepeatMode(prev => prev === 2 ? 0 : prev + 1)
     }
 
     useEffect(() => {
@@ -101,10 +102,14 @@ function Player() {
 
     useEffect(() => {
         const handleEnded = () => {
-            if(isRepeat){
+            if(repeatMode === 2){
                 audioEl.play()
+            }else if(curSongIndex === playlistSongs.length - 1 && repeatMode === 1){
+                dispatch(actions.setCurSongId(playlistSongs[0].encodeId))
+                dispatch(actions.setIsPlaying(true))
+                dispatch(actions.setCurSongIndex(0))
             }else{
-                nextBtnRef.current.click()
+                handleClickNextBtn()
             }
         }
         audioEl.addEventListener('ended', handleEnded)
@@ -112,7 +117,7 @@ function Player() {
         return () => {
             audioEl.removeEventListener('ended', handleEnded)
         }
-    }, [audioEl, isRepeat])
+    }, [audioEl, repeatMode])
 
     useEffect(() => {
         if(isPlaying){
@@ -190,9 +195,9 @@ function Player() {
                     </span>
                     <span
                         onClick={handleClickRepeatBtn}
-                        className={isRepeat ? 'text-main-500' : undefined}
+                        className={repeatMode ? 'text-main-500' : undefined}
                     >
-                        <PiRepeat size={20}/>
+                        {repeatMode === 2 ? <PiRepeatOnceFill size={20}/> : <PiRepeatFill size={20}/>}
                     </span>
                 </div>
                 
