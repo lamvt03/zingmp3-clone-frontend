@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment/moment";
 
 
 import * as apis from '../apis/music'
 import * as actions from '../store/actions'
 import SongList from "./SongList";
+import icons from "../utils/icons";
+import AudioLoading from "./AudioLoading";
+
+const { FaPlay } = icons
 
 function Album() {
+    const { isPlaying } = useSelector(state => state.music)
+
     const { pid } = useParams()
     const [playlist, setPlaylist] = useState({})
 
@@ -28,12 +34,19 @@ function Album() {
     return ( 
         <div className="flex gap-8 pt-8"> 
             <div className="flex-none w-1/4">
-                <div>
+                <div className="relative">
                     <img
                         src={playlist?.thumbnailM}
                         alt='thumbnail'
                         className="object-contain rounded-md"
                     />
+                    <div className="group absolute top-0 bottom-0 left-0 right-0  flex justify-center items-center hover:bg-overlay-30">
+                        {isPlaying ? <span className="p-3 rounded-full text-white border border-white">
+                            <AudioLoading/>
+                        </span> : <span className="p-3 rounded-full text-white border border-white hidden group-hover:block">
+                            <FaPlay size={25}/>
+                        </span>}
+                    </div>
                 </div>
                 <div className="flex flex-col justify-center items-center gap-1 mt-3">
                     <h3
