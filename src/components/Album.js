@@ -9,6 +9,7 @@ import * as actions from '../store/actions'
 import SongList from "./SongList";
 import icons from "../utils/icons";
 import AudioLoading from "./AudioLoading";
+import PageLoading from "./PageLoading";
 
 const { FaPlay } = icons
 
@@ -16,31 +17,31 @@ function Album() {
     const { isPlaying } = useSelector(state => state.music)
 
     const { pid } = useParams()
-    const [playlist, setPlaylist] = useState({})
+    const [playlist, setPlaylist] = useState(false)
 
     const dispatch = useDispatch()
-
     useEffect(() => {
-        const fetchDetailPlaylist = async() => {
+        const fetchDetailPlaylist = async () => {
             const respone = await apis.apiGetDetailPlaylist(pid)
-            if(respone?.data.err === 0){
+            if (respone?.data.err === 0) {
                 setPlaylist(respone.data?.data)
                 dispatch(actions.setPlaylistSongs(respone.data?.data.song.items))
             }
         }
         fetchDetailPlaylist()
     }, [pid])
-    
-    return ( 
-        <div className="flex gap-8 pt-8"> 
+
+    return (
+        <div>
+            {!playlist ? <PageLoading/> : <div className="flex gap-8 pt-8"> 
             <div className="flex-none w-1/4">
-                <div className="relative">
+                <div className="group relative overflow-hidden rounded-md">
                     <img
-                        src={playlist?.thumbnailM}
+                        src={playlist.thumbnailM}
                         alt='thumbnail'
-                        className="object-contain rounded-md"
+                        className="object-contain transition-all duration-500 group-hover:scale-105"
                     />
-                    <div className="group absolute top-0 bottom-0 left-0 right-0  flex justify-center items-center hover:bg-overlay-30">
+                    <div className="absolute top-0 bottom-0 left-0 right-0  flex justify-center items-center hover:bg-overlay-30 ">
                         {isPlaying ? <span className="p-3 rounded-full text-white border border-white">
                             <AudioLoading/>
                         </span> : <span className="p-3 rounded-full text-white border border-white hidden group-hover:block">
@@ -52,15 +53,15 @@ function Album() {
                     <h3
                             className="text-[20px] text-gray-800 font-bold"
                         >
-                            {playlist?.title}
+                            {playlist.title}
                     </h3>
                     <span className="text-xs text-gray-500"> 
-                        Cập nhật:  {moment.unix(playlist?.contentLastUpdate).format("DD/MM/YYYY")}
+                        Cập nhật:  {moment.unix(playlist.contentLastUpdate).format("DD/MM/YYYY")}
                     </span>
                     <span className="text-xs text-gray-500"> 
-                        Tác giả:  {playlist?.artistsNames}
+                        Tác giả:  {playlist.artistsNames}
                     </span>
-                    <span className="text-xs text-gray-500">{`${Math.round(playlist?.like/1000)}K người yêu thích`}</span>
+                    <span className="text-xs text-gray-500">{`${Math.round(playlist.like/1000)}K người yêu thích`}</span>
                 </div>
             </div>
             <div className="flex-auto">
@@ -68,10 +69,12 @@ function Album() {
                     <span className="text-gray-600">Lời tựa </span>
                     <span className="text-gray-800">{playlist.sortDescription}</span>
                 </p>
-                <SongList totalDuration={playlist?.song?.totalDuration}/>
+                <SongList totalDuration={playlist.song.totalDuration}/>
             </div>
+        </div>}
+            {/* {playlist && console.log(playlist)} */}
         </div>
-     );
+    );
 }
 
 export default Album;

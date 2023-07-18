@@ -26,9 +26,9 @@ function SongListItem({songData, songIndex}) {
                 <span className="text-gray-500 mr-3">
                     <BsMusicNoteBeamed size={14}/>
                 </span>
-                <div className="flex-none relative">
+                <div className="flex-none relative rounded-md overflow-hidden">
                     <img 
-                        className="w-10 object-contain rounded-md"
+                        className="w-10 object-contain"
                         src={songData?.thumbnail}
                         alt="thumbnail"
                     />
