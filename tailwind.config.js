@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      width: {
+        '15' : '60px'
+      },
       backgroundColor: {
         'main-100': '#E7ECEC',
         'main-200': '#DDE4E4',
@@ -21,7 +24,10 @@ module.exports = {
         'main-500': '#0E8080' 
       },
       flex: {
-        '4': '4 4 0%'
+        '3': '3 3 0%',
+        '4': '4 4 0%',
+        '6': '6 6 0%',
+        '7': '7 7 0%',
       },
       keyframes: {
         'slide-right': {

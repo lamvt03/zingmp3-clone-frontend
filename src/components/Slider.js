@@ -59,7 +59,7 @@ function Slider() {
     }, [])
 
     return ( 
-        <div className="flex overflow-hidden pt-8">
+        <div className="flex pt-8 pl-[-15px] pr-[-15px]">
             {banner?.map((item, index) => (
                 <div
                     key={item.encodeId} 
