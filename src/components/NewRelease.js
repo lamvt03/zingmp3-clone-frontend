@@ -49,7 +49,7 @@ function NewRelease() {
                         <div onClick={() => handleClickItem(song.encodeId)} className="p-2 rounded-md hover:bg-main-200 hover:cursor-pointer">
                             <SongInfo
                                 thumbnail={song.thumbnail}
-                                thumbnailWidth={15}
+                                thumbnailWidth={16}
                                 title={song.title}
                                 artistsNames={song.artistsNames}
                                 releaseDate={song.releaseDate}

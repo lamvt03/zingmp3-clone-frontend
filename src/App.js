@@ -6,7 +6,8 @@ import { Public, Home, Login } from "./containers/public";
 import path from "./utils/path";
 import * as actions from './store/actions'
 import { useEffect } from "react";
-import { Album } from "./components";
+import { Album, WeekChart, ZingChart } from "./components";
+
 
 function App() {
   const dispatch = useDispatch()
@@ -21,6 +22,8 @@ function App() {
           <Route path={path.LOGIN} element={<Login/>}/>
           <Route path={path.ALBUM__TITLE__PID} element={<Album/>}/>
           <Route path={path.PLAYLIST__TITLE__PID} element={<Album/>}/>
+          <Route path={path.WEEKCHART_TITLE_PID} element={<WeekChart/>}/>
+          <Route path={path.ZINGCHART} element={<ZingChart/>}/>
         </Route>
       </Routes>
     </div>
