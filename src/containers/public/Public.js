@@ -1,18 +1,23 @@
 import { Outlet } from "react-router-dom";
 import { Scrollbars } from 'react-custom-scrollbars-2';
 
-import { Header, Player, Sidebar } from "../../components";
+import { Header, Player, NavSidebar, PlaylistSidebar } from "../../components";
+import { useSelector } from "react-redux";
 
 function Public() {
+    const { showPlaylistSidebar } = useSelector(state => state.app)
+
     return (
-        <div className="relative w-full h-screen flex bg-main-300">
-            <div className="fixed top-0 left-[240px] right-0 h-[70px] px-[59px] z-50">
+        <div className="relative w-full h-screen flex bg-main-300 overflow-hidden">
+            <div className="fixed top-0 left-[240px] right-0 h-[70px] px-[59px] z-10">
                 <Header/>
             </div>
             <div className="w-[240px] flex-none bg-main-200">
-                <Sidebar/>
+                <NavSidebar/>
             </div>
-            
+            <div className={`fixed top-0 bottom-[90px] right-[-330px] w-[330px] bg-main-300 z-20 ${showPlaylistSidebar ? 'animate-slide-sb-left' : 'animate-slide-sb-right'}`}>
+                <PlaylistSidebar/>
+            </div>
             <Scrollbars
                 style={{ width: '100%', height: '100%' }} 
                 autoHide

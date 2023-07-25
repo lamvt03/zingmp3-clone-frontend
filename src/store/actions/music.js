@@ -18,4 +18,12 @@ export const setCurSongIndex = (index) => ({
     type: actionTypes.SET_CUR_SONG_INDEX,
     index
 })
+export const setCurSongData = (data) => ({
+    type: actionTypes.SET_CUR_SONG_DATA,
+    data
+})
+export const setCurAlbumId = (aId) => ({
+    type: actionTypes.SET_CUR_ALBUM_ID,
+    aId
+})
 

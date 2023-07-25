@@ -7,6 +7,9 @@ import { BsSearch, BsMusicNoteBeamed, BsDot } from 'react-icons/bs'
 import { PiRepeat, PiRepeatFill, PiRepeatOnceFill } from 'react-icons/pi'
 import { FaPlay, FaPause } from 'react-icons/fa'
 import { GiNextButton, GiPreviousButton } from 'react-icons/gi'
+import { BiSolidPlaylist } from 'react-icons/bi'
+import { ImBin2 } from 'react-icons/im'
+
 const icons = {
     HiOutlineChartPie,
     LiaChartPieSolid,
@@ -28,7 +31,9 @@ const icons = {
     BsMusicNoteBeamed,
     BsDot,
     PiRepeatFill, 
-    PiRepeatOnceFill
+    PiRepeatOnceFill,
+    BiSolidPlaylist,
+    ImBin2
 }
 
 export default icons

@@ -4,7 +4,7 @@ import logo from '../assests/logo.svg'
 import { sidebarMenu } from '../utils/menu'
 import path from '../utils/path'
 
-function Sidebar() {
+function NavSidebar() {
     const activeStyle = 'flex items-center gap-2 py-3 px-[21px] font-semibold text-[#0F7070] text-[14px]'
     const notActiveStyle = 'flex items-center gap-2 py-3 px-[21px] font-semibold text-[#32323D] text-[14px]'
 
@@ -40,4 +40,4 @@ function Sidebar() {
     </div>;
 }
 
-export default Sidebar;
+export default NavSidebar;

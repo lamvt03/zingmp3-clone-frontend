@@ -1,16 +1,23 @@
 import moment from "moment";
 import 'moment/locale/vi'
 
-function SongInfo({ thumbnail, thumbnailWidth,  title, artistsNames, releaseDate, textColor}) {
+import icons from "../utils/icons";
+
+const { FaPlay } = icons
+function SongInfo({ thumbnail, thumbnailWidth,  title, artistsNames, releaseDate, textColor, hoverable}) {
 
     return (
-        <div className="flex items-center">
-            <div className="mr-[10px]">
+        <div className="flex items-center hover:cursor-pointer">
+            <div className="mr-[10px] relative overflow-hidden rounded-md">
                 <img
-                    className={`w-${thumbnailWidth} rounded-md object-contain`}
+                    style={{width: `${thumbnailWidth}px`}}
+                    className='object-contain'
                     src={thumbnail}
                     alt='thumbnail'
                 />
+                {hoverable && <div className={`absolute top-0 left-0 bottom-0 right-0 text-white justify-center items-center hidden bg-overlay-30 group-hover:flex`}>
+                    <FaPlay size={16}/>
+                </div>}
             </div>
             <div className="flex flex-col justify-center">
                 <h3

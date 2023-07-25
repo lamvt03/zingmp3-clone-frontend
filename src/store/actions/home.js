@@ -30,3 +30,12 @@ export const getHome = () => async (dispatch) => {
     }
 }
 
+export const setShowPlaylistSidebar = (flag) => ({
+    type: actionTypes.SET_SHOW_PLAYLIST_SIDEBAR,
+    flag
+})
+
+export const addRecentSong = (song) => ({
+    type: actionTypes.ADD_RECENT_SONG,
+    song
+})
