@@ -6,7 +6,7 @@ const {HiArrowNarrowLeft, HiArrowNarrowRight} = icons
 function Header() {
 
     return (
-        <div className="flex justify-between h-full items-center bg-main-300">
+        <div className="flex justify-between h-full items-center bg-[rgba(206,217,217,0.99)]">
             <div className="flex gap-5 items-center">
                 <div className="flex gap-5 text-gray-400">
                     <span>
