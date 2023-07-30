@@ -1,5 +1,5 @@
 import icons from "../utils/icons";
-import Search from "./Search";
+import SearchBar from "./SearchBar";
 
 const {HiArrowNarrowLeft, HiArrowNarrowRight} = icons
 
@@ -17,7 +17,7 @@ function Header() {
                     </span>
                 </div>
                 <div className="">
-                    <Search/>
+                    <SearchBar/>
                 </div>  
             </div>
             <div>
