@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import icons from "../utils/icons";
 
 const { FaPlay } = icons
-function Section({ data }) {
+function Section({ title, items }) {
     const navigate = useNavigate()
     const handleClickItem = (item) => {
         const albumPath = item.link.split('.')[0]
@@ -17,11 +17,11 @@ function Section({ data }) {
             <div
                 className="flex justify-between items-center"
             >
-                <h3 className="text-2xl font-bold text-gray-800">{data.title}</h3>
+                <h3 className="text-2xl font-bold text-gray-800">{title}</h3>
                 <span className="text-xs">TẤT CẢ</span>
             </div>
             <div className="mt-8 flex ml-[-10px] mr-[-10px]">
-                {data?.items?.map((item, index) => {
+                {items?.map((item, index) => {
                     return index < 5 && (
                         <div
                             onClick={() => handleClickItem(item)}
@@ -30,7 +30,7 @@ function Section({ data }) {
                         >
                             <div className="group relative overflow-hidden rounded-md">
                                 <img
-                                    src={item.thumbnail}
+                                    src={item.thumbnailM}
                                     alt='thumbnail'
                                     className="object-contain transition-all duration-500 group-hover:scale-105"
                                 />

@@ -1,7 +1,3 @@
-//[0, 1, 2, 3, 4 ,5, 6]
-
-// start = 0, end = 2
-// start = 5, end = 0
 export const getSliderArr = (start, end, length) => {
     const limit = start > end ? length - 1 : end
     let output = []
@@ -23,4 +19,26 @@ export const getRandomIndex = (arr, curIndex) => {
         randomIndex = Math.floor(Math.random() * size)
     }while(curIndex === randomIndex)
     return randomIndex
+}
+
+export const arrToMatrix = (items, col, row) => {
+    const matrix = []
+    let index = 0
+    for(let i = 1; i <= col; i++){
+        const col = [];
+        for(let j = 1; j <= row; j++){
+            col.push(items[index++])
+        }
+        matrix.push(col)
+    }
+    return matrix;
+}
+
+export const handleConcern = (concern) => {
+    if(concern >= Math.pow(10, 6))
+        return `${Math.round(concern*10/Math.pow(10, 6))/10}M`
+    else if(concern >= Math.pow(10, 3))
+        return `${Math.round(concern/Math.pow(10, 3))}K`
+    else 
+        return concern
 }

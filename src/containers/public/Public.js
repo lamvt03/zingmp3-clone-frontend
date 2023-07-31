@@ -3,13 +3,13 @@ import { Scrollbars } from 'react-custom-scrollbars-2';
 
 import { Header, Player, NavSidebar, PlaylistSidebar } from "../../components";
 import { useSelector } from "react-redux";
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 
 function Public() {
     const { showPlaylistSidebar } = useSelector(state => state.app)
     const headerRef = useRef()
 
-    const handleScroll = (e) => {
+    const handleScroll = useCallback((e) => {
         if(headerRef){
             if(e.target.scrollTop >= 70){
                 headerRef.current.classList.add('shadow-bottom')
@@ -17,10 +17,10 @@ function Public() {
                 headerRef.current.classList.remove('shadow-bottom')
             }
         }
-    }
+    }, [])
     return (
         <div onScroll={handleScroll} className="relative w-full h-screen flex flex-col bg-main-300 overflow-hidden">
-            <div ref={headerRef} className="fixed top-0 left-[240px] right-0 h-[70px] px-[59px] z-10">
+            <div ref={headerRef} className="fixed top-0 left-[240px] right-0 h-[70px] px-[59px] z-10 bg-main-300">
                 <Header />
             </div>
             <div className="fixed top-0 left-0 bottom-0 w-[240px] bg-main-200 z-20">

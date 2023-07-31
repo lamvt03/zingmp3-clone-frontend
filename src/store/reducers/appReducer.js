@@ -9,7 +9,8 @@ const initState = {
     weekChart: {},
     hZC: {},
     rank: [],
-    chart: {}
+    chart: {},
+    searchData: null
 }
 
 const appReducer = (state = initState, action) => {
@@ -30,6 +31,11 @@ const appReducer = (state = initState, action) => {
             return {
                 ...state,
                 showPlaylistSidebar: action.flag
+            }
+        case actionTypes.SEARCH:
+            return {
+                ...state,
+                searchData: action.data
             }
         default:
             return state

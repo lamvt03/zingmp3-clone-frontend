@@ -9,8 +9,8 @@ function Home() {
     return (
         <div className="max-w-full">
             <Slider />
-            <Section data={hEditorTheme} />
-            <Section data={hEditorTheme2} />
+            <Section title={hEditorTheme.title} items={hEditorTheme.items} />
+            <Section title={hEditorTheme2.title} items={hEditorTheme2.items} />
             <NewRelease />
             <ChartSection/>
             <section className="mt-12 flex ml-[-14px] mr-[-14px]">

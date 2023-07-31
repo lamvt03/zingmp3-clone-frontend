@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { createSearchParams, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import icons from "../utils/icons";
 import * as apis from '../apis'
+import * as actions from '../store/actions'
 import path from '../utils/path'
 
 const { BsSearch } = icons
@@ -11,15 +13,17 @@ function SearchBar() {
     const [keyword, setKeyword] = useState('')
 
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const handleSearch = (e) => {
         if (e.keyCode === 13) {
-            // const fetch = async () => {
-            //     const resp = await apis.apiSearch(keyword)
-            //     console.log(resp.data.data);
-            // }
-            // fetch()
-            navigate(`${path.SEARCH}/${path.ALL}`)
+            dispatch(actions.search(keyword))
+            navigate({
+                pathname: `${path.SEARCH}/${path.ALL}`,
+                search: createSearchParams({
+                   q: keyword
+                }).toString()
+            });
         }
     }
 
