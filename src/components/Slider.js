@@ -27,9 +27,9 @@ function Slider() {
         const internalId = setInterval(() => {
             const list = getSliderArr(min, max, slider.length)
             for(let i = 0; i < slider.length; i++){
-                slider[i]?.classList.remove('animate-slide-right', 'order-last', 'z-20')
-                slider[i]?.classList.remove('animate-slide-left', 'order-first', 'z-10')
-                slider[i]?.classList.remove('animate-slide-left2', 'order-2', 'z-10')
+                slider[i]?.classList.remove('animate-slide-right', 'order-last', 'z-5')
+                slider[i]?.classList.remove('animate-slide-left', 'order-first', 'z-4')
+                slider[i]?.classList.remove('animate-slide-left2', 'order-2', 'z-4')
 
                 if(list.some(item => item === i)){
                     slider[i].style.display = 'block'
@@ -40,11 +40,11 @@ function Slider() {
 
             list.forEach(item => {
                 if(item === max){
-                    slider[item]?.classList.add('animate-slide-right', 'order-last', 'z-20')
+                    slider[item]?.classList.add('animate-slide-right', 'order-last', 'z-5')
                 }else if(item === min){
-                    slider[item]?.classList.add('animate-slide-left', 'order-first', 'z-10')
+                    slider[item]?.classList.add('animate-slide-left', 'order-first', 'z-4')
                 }else{
-                    slider[item]?.classList.add('animate-slide-left2', 'order-2', 'z-10')
+                    slider[item]?.classList.add('animate-slide-left2', 'order-2', 'z-4')
                 }
             })
 
@@ -59,7 +59,7 @@ function Slider() {
     }, [])
 
     return ( 
-        <div className="flex pt-8 pl-[-15px] pr-[-15px]">
+        <div className="flex pt-8 pl-[-15px] pr-[-15px] z-0">
             {banner?.map((item, index) => (
                 <div
                     key={item.encodeId} 

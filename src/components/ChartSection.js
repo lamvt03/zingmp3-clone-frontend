@@ -57,9 +57,6 @@ function ChartSection() {
 
                     setHoverSongId(counters.filter(counter => counter.data.some(item => item === +tooltip.body[0].lines[0].replace('.', '')))[0].encodeId)
 
-                    // console.log(rank?.[counters.filter(counter => counter.data.some(item => item === +tooltip.body[0].lines[0].replace('.', '')))[0].encodeId]);
-                    // console.log(counters.filter(counter => counter.data.some(item => item === +tooltip.body[0].lines[0].replace('.', '')))[0].encodeId);
-
                     const newTooltipData = {
                         opacity: 1,
                         left: tooltip.caretX,
@@ -74,9 +71,6 @@ function ChartSection() {
             intersect: false
         }
     }
-    
-    // console.log(tooltipState);
-    // console.log({rank, chart});
 
     useEffect(() => {
         const labels = chart?.times?.filter(time => time.hour % 2 === 1).map(time => `${time.hour}:00`)
@@ -115,7 +109,7 @@ function ChartSection() {
                                         <div className='flex-auto'>
                                             <SongInfo
                                                 thumbnail={song.thumbnail}
-                                                thumbnailWidth={16}
+                                                thumbnailWidth={60}
                                                 title={song.title}
                                                 artistsNames={song.artistsNames}  
                                                 textColor={'light'}  
@@ -138,7 +132,7 @@ function ChartSection() {
                             {hoverSongId && <div className='bg-white px-3 py-2 rounded-md'>
                                 <SongInfo
                                                 thumbnail={rank?.find(item => item.encodeId === hoverSongId).thumbnail}
-                                                thumbnailWidth={16}
+                                                thumbnailWidth={60}
                                                 title={rank?.find(item => item.encodeId === hoverSongId).title}
                                                 artistsNames={rank?.find(item => item.encodeId === hoverSongId).artistsNames}  
                                                 textColor={'dark'}  

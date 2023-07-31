@@ -16,6 +16,7 @@ function SongListItem({songData, songIndex}) {
         dispatch(actions.setCurSongId(songData.encodeId))
         dispatch(actions.setIsPlaying(true))
         dispatch(actions.setCurSongIndex(songIndex))
+        dispatch(actions.addRecentSong(songData))
     }
     return (
         <div
@@ -38,14 +39,14 @@ function SongListItem({songData, songIndex}) {
                 </div>
                 <div className="flex flex-col ml-3 gap-1">
                     {/* <span className="font-semibold text-gray-500 text-[14px]">{songData?.title.length > 30 ? songData?.title.slice(0,30) + '...' : songData?.title}</span> */}
-                    <span className="font-semibold text-gray-500 text-[14px] w-full whitespace-nowrap overflow-hidden text-ellipsis">{songData?.title}</span>
+                    <span className="font-semibold text-gray-500 text-[14px] max-w-full whitespace-nowrap overflow-hidden text-ellipsis">{songData?.title}</span>
                     <span>{songData?.artistsNames}</span>
                 </div>
             </div>
             <div className="w-[40%]">
                 {songData?.album?.title}
             </div>
-            <div className="w-[10%] text-right "> 
+            <div className="w-[10%] text-right"> 
                 {moment.utc(songData?.duration * 1000).format('mm:ss')}
             </div>
         </div>

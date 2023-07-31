@@ -45,15 +45,16 @@ function NewRelease() {
             </div>
             <div className="mt-3 ml-[-14px] mr-[-14px] flex flex-wrap">
                 {songs?.map((song, index) => (
-                    index < 12 && <div key={song.encodeId} className="w-1/3 mt-3 px-[14px] ">
+                    index < 12 && <div key={song.encodeId} className="w-1/3 mt-3 px-[14px] group">
                         <div onClick={() => handleClickItem(song.encodeId)} className="p-2 rounded-md hover:bg-main-200 hover:cursor-pointer">
                             <SongInfo
                                 thumbnail={song.thumbnail}
-                                thumbnailWidth={16}
+                                thumbnailWidth={60}
                                 title={song.title}
                                 artistsNames={song.artistsNames}
                                 releaseDate={song.releaseDate}
                                 textColor={'dark'}
+                                hoverable={true}
                             />
                         </div>
                     </div>

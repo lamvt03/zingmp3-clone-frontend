@@ -6,11 +6,14 @@ import * as apis from '../apis'
 import * as actions from '../store/actions'
 import icons from "../utils/icons";
 import { getRandomIndex } from "../utils/fn";
+import AudioSourceLoading from "./AudioSourceLoading";
+import SongInfo from "./SongInfo";
 
-const { AiOutlineHeart, LuMoreHorizontal, LiaRandomSolid, FaPlay, FaPause, GiNextButton, GiPreviousButton, PiRepeatFill, PiRepeatOnceFill } = icons
+const { AiOutlineHeart, LuMoreHorizontal, LiaRandomSolid, FaPlay, FaPause, GiNextButton, GiPreviousButton, PiRepeatFill, PiRepeatOnceFill, BiSolidPlaylist } = icons
 
 function Player() {
     const { curSongId, isPlaying, playlistSongs, curSongIndex } = useSelector(state => state.music)
+    const { showPlaylistSidebar } = useSelector(state => state.app)
 
     const [songInfo, setSongInfo] = useState(null)
     const [audioEl, setAudioEl] = useState(new Audio())
@@ -19,30 +22,31 @@ function Player() {
     // 0: normal, 1: repeat playlist, 2: repeat once
     const [repeatMode, setRepeatMode] = useState(0)
     const [isRandom, setIsRandom] = useState(false)
+    const [isLoadingSource, setIsLoadingSource] = useState(false)
 
-    // console.log(playlistSongs);
+    // console.log(showPlaylistSidebar);
     const thumbRef = useRef()
     const trackRef = useRef()
     const nextBtnRef = useRef()
 
     const dispatch = useDispatch()
     const handleToggleButton = () => {
-        if(isPlaying){
-            audioEl.pause() 
-        }else{
+        if (isPlaying) {
+            audioEl.pause()
+        } else {
             audioEl.play()
         }
         dispatch(actions.setIsPlaying(!isPlaying))
     }
     const handleClickTrack = (e) => {
-        const {left, width} = trackRef.current.getBoundingClientRect()
+        const { left, width } = trackRef.current.getBoundingClientRect()
         const percent = Math.round((e.clientX - left) / width * 10000) / 100
         thumbRef.current.style.cssText = `right: ${100 - percent}%`
         audioEl.currentTime = Math.round(percent * songInfo?.duration / 100)
         setCurSeconds(audioEl.currentTime)
     }
     const handleClickPrevBtn = () => {
-        if(playlistSongs){
+        if (playlistSongs) {
             const prevIndex = curSongIndex - 1 >= 0 ? curSongIndex - 1 : playlistSongs.length - 1
             dispatch(actions.setCurSongId(playlistSongs[prevIndex].encodeId))
             dispatch(actions.setIsPlaying(true))
@@ -50,11 +54,11 @@ function Player() {
         }
     }
     const handleClickNextBtn = () => {
-        if(playlistSongs){
+        if (playlistSongs) {
             let nextIndex
-            if(isRandom){
+            if (isRandom) {
                 nextIndex = getRandomIndex(playlistSongs, curSongIndex)
-            }else{
+            } else {
                 nextIndex = curSongIndex + 1 < playlistSongs.length ? curSongIndex + 1 : 0
             }
             dispatch(actions.setCurSongId(playlistSongs[nextIndex].encodeId))
@@ -70,20 +74,22 @@ function Player() {
     }
 
     useEffect(() => {
+        setIsLoadingSource(true)
         const fetchDetailSong = async () => {
             const [res1, res2] = await Promise.all([
                 apis.apiGetDetailSong(curSongId),
                 apis.apiGetSong(curSongId)
             ])
-            
-            if(res1.data.err === 0){
+            setIsLoadingSource(false)
+            if (res1.data.err === 0) {
                 setSongInfo(res1.data.data)
                 setCurSeconds(0)
+                dispatch(actions.setCurSongData(res1.data.data))
             }
-            if(res2.data.err === 0){
+            if (res2.data.err === 0) {
                 audioEl.pause()
                 setAudioEl(new Audio(res2.data.data['128']))
-            }else{
+            } else {
                 audioEl.pause()
                 setAudioEl(new Audio())
                 alert(res2.data.msg)
@@ -95,20 +101,20 @@ function Player() {
 
     useEffect(() => {
         audioEl.load()
-        if(isPlaying){
+        if (isPlaying) {
             audioEl.play()
         }
     }, [audioEl])
 
     useEffect(() => {
         const handleEnded = () => {
-            if(repeatMode === 2){
+            if (repeatMode === 2) {
                 audioEl.play()
-            }else if(curSongIndex === playlistSongs.length - 1 && repeatMode === 1){
+            } else if (curSongIndex === playlistSongs.length - 1 && repeatMode === 1) {
                 dispatch(actions.setCurSongId(playlistSongs[0].encodeId))
                 dispatch(actions.setIsPlaying(true))
                 dispatch(actions.setCurSongIndex(0))
-            }else{
+            } else {
                 handleClickNextBtn()
             }
         }
@@ -120,7 +126,7 @@ function Player() {
     }, [audioEl, repeatMode])
 
     useEffect(() => {
-        if(isPlaying){
+        if (isPlaying) {
             var intervalId = setInterval(() => {
                 let percent = Math.round(audioEl.currentTime * 10000 / songInfo?.duration) / 100
                 thumbRef.current.style.cssText = `right: ${100 - percent}%`
@@ -135,31 +141,19 @@ function Player() {
     return (
         <div className="h-full bg-main-400  px-5 flex items-center">
             <div className="flex-auto w-[30%] flex items-center">
-                <div className="mr-[10px]">
-                    <img
-                        className="w-16 rounded-md object-cover"
-                        src={songInfo?.thumbnail}
-                        alt="Thumbnail"
-                    />
-                </div>
-                <div className="flex flex-col justify-start">
-                    <h3 
-                        className="font-semibold text-gray-700 text-[14px]"
-                    >
-                        {songInfo?.title}
-                    </h3>
-                    <span
-                        className=" text-gray-500 text-xs"
-                    >
-                        {songInfo?.artistsNames}
-                    </span>
-                </div>
+                <SongInfo
+                    thumbnail={songInfo?.thumbnail}
+                    thumbnailWidth={64}
+                    title={songInfo?.title}
+                    artistsNames={songInfo?.artistsNames}
+                    textColor={'dark'}
+                />
                 <div className="ml-[10px] flex gap-4">
                     <span>
-                        <AiOutlineHeart size={16}/>
-                    </span> 
+                        <AiOutlineHeart size={16} />
+                    </span>
                     <span>
-                        <LuMoreHorizontal size={16}/>
+                        <LuMoreHorizontal size={16} />
                     </span>
                 </div>
             </div>
@@ -172,40 +166,40 @@ function Player() {
                         onClick={handleClickRandomBtn}
                         className={isRandom ? 'text-main-500' : undefined}
                     >
-                        <LiaRandomSolid size={20}/>
+                        <LiaRandomSolid size={20} />
                     </span>
                     <span
                         onClick={handleClickPrevBtn}
                         className={`cursor-pointer ${curSongIndex === null ? 'opacity-40 cursor-not-allowed' : undefined}`}
                     >
-                        <GiPreviousButton size={20}/>
+                        <GiPreviousButton size={20} />
                     </span>
-                    <span 
+                    <span
                         className="p-2 border border-gray-500 rounded-[50%] hover:text-main-500 hover:border-main-500 hover:cursor-pointer"
                         onClick={handleToggleButton}
                     >
-                        {isPlaying  ?  <FaPause size={20}/> : <FaPlay size={20}/>}
+                        {isLoadingSource ? <AudioSourceLoading size={20} /> : isPlaying ? <FaPause size={20} /> : <FaPlay size={20} />}
                     </span>
                     <span
                         ref={nextBtnRef}
                         onClick={handleClickNextBtn}
                         className={`cursor-pointer ${curSongIndex === null ? 'opacity-40 cursor-not-allowed' : undefined}`}
                     >
-                        <GiNextButton size={20}/>
+                        <GiNextButton size={20} />
                     </span>
                     <span
                         onClick={handleClickRepeatBtn}
                         className={repeatMode ? 'text-main-500' : undefined}
                     >
-                        {repeatMode === 2 ? <PiRepeatOnceFill size={20}/> : <PiRepeatFill size={20}/>}
+                        {repeatMode === 2 ? <PiRepeatOnceFill size={20} /> : <PiRepeatFill size={20} />}
                     </span>
                 </div>
-                
+
                 {/* progress bar */}
                 <div className="w-full flex items-center text-xs text-[#32323D] font-semibold">
                     <span className="mr-3 opacity-70">{moment.utc(curSeconds * 1000).format('mm:ss')}</span>
                     <div
-                        ref={trackRef} 
+                        ref={trackRef}
                         onClick={handleClickTrack}
                         className="h-[3px] flex-auto bg-[rgba(0,0,0,0.1)] m-auto relative rounded-l-full rounded-r-full hover:h-[6px] hover:cursor-pointer"
                     >
@@ -214,15 +208,20 @@ function Player() {
                             className="absolute top-0 bottom-0 left-0 bg-main-500 rounded-l-full rounded-r-full"
                         >
                         </div>
-                    </div> 
+                    </div>
                     <span className="ml-3">{moment.utc(songInfo?.duration * 1000).format('mm:ss')}</span>
                 </div>
             </div>
             <div className="flex-auto w-[30%]">
-                right
+                <span
+                    onClick={() => dispatch(actions.setShowPlaylistSidebar(!showPlaylistSidebar))}
+                    className="p-2 bg-main-300 rounded-md"
+                >
+                    <BiSolidPlaylist />
+                </span>
             </div>
         </div>
-      );
+    );
 }
 
 
